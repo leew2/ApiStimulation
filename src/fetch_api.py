@@ -1,3 +1,13 @@
+import os
+from datetime import datetime
+
+# Logging utility
+def write_log(action, message):
+    if not os.path.exists('log'):
+        os.makedirs('log', exist_ok=True)
+    log_path = os.path.join('log', 'api.log')
+    with open(log_path, 'a') as f:
+        f.write(f"[{datetime.now().isoformat()}] {action}: {message}\n")
 # Post data to air_quality table in env.db
 import json
 
@@ -15,17 +25,21 @@ class api:
     def GET(sortby="date"): # returns all data sorted by a specific column
         if db_checks("./data/env.db"):
             df = get_data_df()
+            write_log("GET", f"Returned {len(df)} records sorted by {sortby}.")
             return df.sort_values(by=sortby)
+        write_log("GET", "Database check failed.")
         return {"error": "Database check failed."}
 
     def POST(data=None):
         if isinstance(data, str):
             data = json.loads(data)
-            required = ["station_id", "date", "aqi", "co2_ppm"]
-            for key in required:
-                if key not in data:
-                    print(f"Missing field: {key}")
-                    return 404
+        required = ["station_id", "date", "aqi", "co2_ppm"]
+        for key in required:
+            if key not in data:
+                msg = f"Missing field: {key}"
+                print(msg)
+                write_log("POST", msg)
+                return 404
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -35,20 +49,26 @@ class api:
             )
             conn.commit()
             conn.close()
-            print(f"POST: Data inserted successfully {data}")
+            msg = f"Data inserted successfully {data}"
+            print(f"POST: {msg}")
+            write_log("POST", msg)
             return 200
         except Exception as e:
-            print(f"POST failed: {e}")
+            msg = f"POST failed: {e}"
+            print(msg)
+            write_log("POST", msg)
             return 404
     
     def PUT(data=None):
         if isinstance(data, str):
             data = json.loads(data)
-            required = ["station_id", "date", "air_quality", "co2_ppm"]
-            for key in required:
-                if key not in data:
-                    print(f"Missing field: {key}")
-                    return 404
+        required = ["station_id", "date", "aqi", "co2_ppm"]
+        for key in required:
+            if key not in data:
+                msg = f"Missing field: {key}"
+                print(msg)
+                write_log("PUT", msg)
+                return 404
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -58,20 +78,26 @@ class api:
             )
             conn.commit()
             conn.close()
-            print(f"PUT: Data successfully updated {data}")
+            msg = f"Data successfully updated {data}"
+            print(f"PUT: {msg}")
+            write_log("PUT", msg)
             return 200
         except Exception as e:
-            print(f"PUT failed: {e}")
+            msg = f"PUT failed: {e}"
+            print(msg)
+            write_log("PUT", msg)
             return 404
         
     def DELETE(data=None):
         if isinstance(data, str):
             data = json.loads(data)
-            required = ["station_id", "date"]
-            for key in required:
-                if key not in data:
-                    print(f"Missing field: {key}")
-                    return 404
+        required = ["station_id", "date"]
+        for key in required:
+            if key not in data:
+                msg = f"Missing field: {key}"
+                print(msg)
+                write_log("DELETE", msg)
+                return 404
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -81,10 +107,14 @@ class api:
             )
             conn.commit()
             conn.close()
-            print(f"DELETE: Data deleted successfully {data}")
+            msg = f"Data deleted successfully {data}"
+            print(f"DELETE: {msg}")
+            write_log("DELETE", msg)
             return 200
         except Exception as e:
-            print(f"DELETE failed: {e}")
+            msg = f"DELETE failed: {e}"
+            print(msg)
+            write_log("DELETE", msg)
             return 404
         
 # end of api() --------------------------------------------------------------

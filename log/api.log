@@ -1,0 +1,2 @@
+[2025-08-17T15:36:02.553221] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T15:36:02.559952] GET: Returned 502 records sorted by date.

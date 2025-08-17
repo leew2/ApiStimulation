@@ -1,3 +1,13 @@
+import os
+from datetime import datetime
+
+# Logging utility (same as in fetch_api.py)
+def write_log(action, message):
+    if not os.path.exists('log'):
+        os.makedirs('log', exist_ok=True)
+    log_path = os.path.join('log', 'api.log')
+    with open(log_path, 'a') as f:
+        f.write(f"[{datetime.now().isoformat()}] {action}: {message}\n")
 import random
 import sqlite3
 from faker import Faker
@@ -27,7 +37,9 @@ def create_db():
     con = sqlite3.connect("data/env.db")
     df.to_sql("air_quality", con, if_exists="replace", index=False)
     con.close()
-    print("✅ synthetic database saved to data/env.db")
+    msg = "✅ synthetic database saved to data/env.db"
+    print(msg)
+    write_log("CREATE_DB", msg)
 # end of create_db() -----------------------------------------------------------------------
 
 
