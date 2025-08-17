@@ -16,10 +16,11 @@ import os
 
 def handler(local_df, db_df):
     merged = combine_data(local_df, db_df)
+    print(f"Local: {local_df.shape}, DB: {db_df.shape}")
     print(f"Combined data size: {merged.shape}")
     kpi_df = average_duplicates(merged)
+    print(f"Data Size After Average Duplicate : {kpi_df.shape}")
     save_kpis(kpi_df.sort_values(by='station_id'), "kpis")
-    print(f"merged KPI: {kpi_df.shape}" )
     return overall_averages(kpi_df)
 
 # Calculate overall average AQI and CO2 of merged DataFrame
