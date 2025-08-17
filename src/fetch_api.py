@@ -1,34 +1,103 @@
+# Post data to air_quality table in env.db
+import json
+
 # imported from assignment
 # scripts/generate_fake_data.py
 import os
-from faker import Faker
 from fetch_db import get_db_connection
 import pandas as pd
-import random
 import time
 from fetch_db import create_db
 
 # main frame of API --------------------------------------------------------------
-def api(target, key):
-    # Simulate API call
-    time.sleep(1)
-    if target == "get_db" and key == "your_api_key":
+class api:
+    # due to limited time, no search for specific value
+    def GET(sortby="date"): # returns all data sorted by a specific column
         if db_checks("./data/env.db"):
             df = get_data_df()
-            return {"data": df}
-    elif target == "sort_data" and key == "your_api_key":
-        if db_checks("./data/env.db"):
-            df = get_data_df()
-            sorted_df = df.sort_values(by="air_quality", ascending=False)
-            return {"data": sorted_df}
-    else:
-        return {"error": f"Unknown target: {target}"}
+            return df.sort_values(by=sortby)
+        return {"error": "Database check failed."}
+
+    def POST(data=None):
+        if isinstance(data, str):
+            data = json.loads(data)
+            required = ["station_id", "date", "aqi", "co2_ppm"]
+            for key in required:
+                if key not in data:
+                    print(f"Missing field: {key}")
+                    return 404
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO air_quality (station_id, date, aqi, co2_ppm) VALUES (?, ?, ?, ?)",
+                (data["station_id"], data["date"], data["aqi"], data["co2_ppm"])
+            )
+            conn.commit()
+            conn.close()
+            print(f"POST: Data inserted successfully {data}")
+            return 200
+        except Exception as e:
+            print(f"POST failed: {e}")
+            return 404
+    
+    def PUT(data=None):
+        if isinstance(data, str):
+            data = json.loads(data)
+            required = ["station_id", "date", "air_quality", "co2_ppm"]
+            for key in required:
+                if key not in data:
+                    print(f"Missing field: {key}")
+                    return 404
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE air_quality SET aqi = ?, co2_ppm = ? WHERE station_id = ? AND date = ?",
+                (data["aqi"], data["co2_ppm"], data["station_id"], data["date"])
+            )
+            conn.commit()
+            conn.close()
+            print(f"PUT: Data successfully updated {data}")
+            return 200
+        except Exception as e:
+            print(f"PUT failed: {e}")
+            return 404
+        
+    def DELETE(data=None):
+        if isinstance(data, str):
+            data = json.loads(data)
+            required = ["station_id", "date"]
+            for key in required:
+                if key not in data:
+                    print(f"Missing field: {key}")
+                    return 404
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM air_quality WHERE station_id = ? AND date = ?",
+                (data["station_id"], data["date"])
+            )
+            conn.commit()
+            conn.close()
+            print(f"DELETE: Data deleted successfully {data}")
+            return 200
+        except Exception as e:
+            print(f"DELETE failed: {e}")
+            return 404
+        
 # end of api() --------------------------------------------------------------
+
+
+
+
+
 
 # create data from db -------------------------------------------------------------------
 def get_data_df():
     conn = get_db_connection()
-    df = pd.read_sql_query("SELECT * FROM air_quality", conn)
+    df = pd.read_sql_query(f"SELECT * FROM air_quality", conn)
     conn.close()
     return df
 # end of get_data_df() -----------------------------------------------------------------------
@@ -43,25 +112,3 @@ def db_checks(db_path):
     print(data)
     return True
 # ------------------------------------------------------------------
-
-
-# Create local synthetic data -----------------------------------------------------------------------------
-def create_local_data():
-    fake = Faker()
-    data = []
-    for _ in range(100):
-        entry = {
-            "station_id": fake.bothify("ST###"),
-            "date": fake.date_between("-30d", "today").isoformat(),
-            "air_quality": random.randint(10, 200),
-            "co2_ppm": round(random.uniform(350, 450), 1)
-        }
-        data.append(entry)
-    df = pd.DataFrame(data)
-    csv_path = "../data/weather_station_data.csv"
-    df.to_csv(csv_path, index=False)
-    print(f"✅ Data saved to {csv_path}")
-    return csv_path
-# end of create_local_data() -----------------------------------------------------------------
-
-
