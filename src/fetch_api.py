@@ -108,7 +108,5 @@ def db_checks(db_path):
         print(f"Database not found at {db_path}.")
         time.sleep(2)
         create_db()
-    data = get_data_df()
-    print(data)
     return True
 # ------------------------------------------------------------------

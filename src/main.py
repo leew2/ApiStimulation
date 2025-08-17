@@ -5,7 +5,7 @@ import random
 import pandas as pd
 from fetch_api import api
 from faker import Faker
-from tranform import join, check_data
+from tranform import handler
 
 def main():
     local_data("check_local")
@@ -15,12 +15,12 @@ def main():
         "aqi": 1,
         "co2_ppm": 1
     }
-    db_df = api.GET()
-    local = local_data("get_local")
-    
-    joined = join(local, db_df)
-    print(joined)
 
+    api.POST(data)
+    db = api.GET()
+    local = local_data("get_local")
+
+    handler(local, db)
 
 
 # Create local synthetic data -----------------------------------------------------------------------------
