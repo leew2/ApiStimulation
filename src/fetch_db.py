@@ -1,5 +1,9 @@
 import os
 from datetime import datetime
+import random
+import sqlite3
+from faker import Faker
+import pandas as pd
 
 # Logging utility (same as in fetch_api.py)
 def write_log(action, message):
@@ -8,10 +12,7 @@ def write_log(action, message):
     log_path = os.path.join('log', 'api.log')
     with open(log_path, 'a') as f:
         f.write(f"[{datetime.now().isoformat()}] {action}: {message}\n")
-import random
-import sqlite3
-from faker import Faker
-import pandas as pd
+
 
 # Get a connection to the database ----------------------------------------------------
 def get_db_connection():
