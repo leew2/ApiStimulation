@@ -1,6 +1,5 @@
 
 import os
-import time
 import random
 import pandas as pd
 from fetch_api import api
