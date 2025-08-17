@@ -21,6 +21,9 @@ def main():
 
     handler(local, db)
 
+    print(f"database Data: {api.GET()}")
+    print(f"local Data: {local}")
+
 
 # Create local synthetic data -----------------------------------------------------------------------------
 
