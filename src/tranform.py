@@ -32,7 +32,6 @@ def overall_averages(df):
     avg_aqi = round(df[aqi_cols].values.flatten().mean(), 2) if aqi_cols else None
     avg_co2 = round(df[co2_cols].values.flatten().mean(), 2) if co2_cols else None
 
-    write_log("KPI", f"Overall average AQI: {avg_aqi}, Overall average CO2: {avg_co2}")
     return avg_aqi, avg_co2
 
 def save_kpis(kpi_df, name='kpis'):
@@ -40,6 +39,15 @@ def save_kpis(kpi_df, name='kpis'):
     Save the KPI DataFrame to a CSV file in the 'data' folder.
     """
     os.makedirs("data", exist_ok=True)
+    aqi, co2 = overall_averages(kpi_df)
+    # Add a summary row for overall averages
+    summary_row = {col: None for col in kpi_df.columns}
+    summary_row['station_id'] = 'OVERALL_AVG'
+    if 'aqi' in kpi_df.columns:
+        summary_row['aqi'] = aqi
+    if 'co2_ppm' in kpi_df.columns:
+        summary_row['co2_ppm'] = co2
+    kpi_df = pd.concat([kpi_df, pd.DataFrame([summary_row])], ignore_index=True)
     kpi_df.to_csv(os.path.join("data", f"{name}.csv"), index=False)
     print(f"KPIs saved to data/kpi_{name}.csv")
 

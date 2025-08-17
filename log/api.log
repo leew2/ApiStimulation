@@ -18,6 +18,9 @@
 [2025-08-17T17:14:11.212168] GET: Returned 500 records sorted by date.
 [2025-08-17T17:16:51.667288] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
 [2025-08-17T17:16:51.675177] GET: Returned 501 records sorted by date.
-[2025-08-17T17:16:51.701330] KPI: Overall average AQI: 104.26, Overall average CO2: 398.17
 [2025-08-17T17:16:51.714949] DELETE: Data deleted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
 [2025-08-17T17:16:51.722216] GET: Returned 500 records sorted by date.
+[2025-08-17T17:32:54.482458] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:32:54.489631] GET: Returned 501 records sorted by date.
+[2025-08-17T17:32:54.532691] DELETE: Data deleted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:32:54.539203] GET: Returned 500 records sorted by date.
