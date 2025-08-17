@@ -19,11 +19,11 @@ def main():
     db = api.GET()
     local = local_data("get_local")
 
-    handler(local, db)
-
+    aqi, co2 = handler(local, db)
+    api.DELETE(data)
     print(f"database Data: {api.GET()}")
     print(f"local Data: {local}")
-
+    print(f"Overall Average AQI: {aqi}, Overall Average CO2: {co2}")
 
 # Create local synthetic data -----------------------------------------------------------------------------
 

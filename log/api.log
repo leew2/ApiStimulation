@@ -6,3 +6,18 @@
 [2025-08-17T15:58:14.418139] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
 [2025-08-17T15:58:14.431125] GET: Returned 504 records sorted by date.
 [2025-08-17T15:58:14.469529] GET: Returned 504 records sorted by date.
+[2025-08-17T17:12:31.985792] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:12:32.002237] GET: Returned 505 records sorted by date.
+[2025-08-17T17:12:32.065878] GET: Returned 505 records sorted by date.
+[2025-08-17T17:13:19.670823] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:13:19.677785] GET: Returned 506 records sorted by date.
+[2025-08-17T17:13:19.710433] GET: Returned 506 records sorted by date.
+[2025-08-17T17:14:11.155765] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:14:11.163928] GET: Returned 507 records sorted by date.
+[2025-08-17T17:14:11.204864] DELETE: Data deleted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:14:11.212168] GET: Returned 500 records sorted by date.
+[2025-08-17T17:16:51.667288] POST: Data inserted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:16:51.675177] GET: Returned 501 records sorted by date.
+[2025-08-17T17:16:51.701330] KPI: Overall average AQI: 104.26, Overall average CO2: 398.17
+[2025-08-17T17:16:51.714949] DELETE: Data deleted successfully {'station_id': 'ST001', 'date': '2023-08-01', 'aqi': 1, 'co2_ppm': 1}
+[2025-08-17T17:16:51.722216] GET: Returned 500 records sorted by date.

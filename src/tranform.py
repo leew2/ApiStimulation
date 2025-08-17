@@ -1,3 +1,12 @@
+from datetime import datetime
+
+# Logging utility (reuse if already present elsewhere)
+def write_log(action, message):
+    if not os.path.exists('log'):
+        os.makedirs('log', exist_ok=True)
+    log_path = os.path.join('log', 'api.log')
+    with open(log_path, 'a') as f:
+        f.write(f"[{datetime.now().isoformat()}] {action}: {message}\n")
 import pandas as pd
 import os
 # Combine 2 data from CSV and DB into one
@@ -11,8 +20,20 @@ def handler(local_df, db_df):
     kpi_df = average_duplicates(merged)
     save_kpis(kpi_df.sort_values(by='station_id'), "kpis")
     print(f"merged KPI: {kpi_df.shape}" )
-    joined = join(local_df, db_df)
-    return joined
+    return overall_averages(kpi_df)
+
+# Calculate overall average AQI and CO2 of merged DataFrame
+def overall_averages(df):
+    """
+    Returns the overall average AQI and CO2 of the merged DataFrame.
+    """
+    aqi_cols = [col for col in df.columns if 'aqi' in col]
+    co2_cols = [col for col in df.columns if 'co2' in col]
+    avg_aqi = round(df[aqi_cols].values.flatten().mean(), 2) if aqi_cols else None
+    avg_co2 = round(df[co2_cols].values.flatten().mean(), 2) if co2_cols else None
+
+    write_log("KPI", f"Overall average AQI: {avg_aqi}, Overall average CO2: {avg_co2}")
+    return avg_aqi, avg_co2
 
 def save_kpis(kpi_df, name='kpis'):
     """
